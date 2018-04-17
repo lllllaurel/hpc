@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>登陆</title>
+<style>
+*{
+	padding:0px;
+	margin:0px;
+	}
+
+body{
+	font-family:Arial, Helvetica, sans-serif;
+	background:url(images/grass.jpg);
+	font-size:13px;
+    
+	}
+img{
+	border:0;
+	}
+.lg{width:468px; height:468px; margin:100px auto; background:url(images/login_bg.png) no-repeat;}
+.lg_top{ height:200px; width:468px;}
+.lg_main{width:400px; height:180px; margin:0 25px;}
+.lg_m_1{
+	width:290px;
+	height:105px;
+	padding:60px 55px 20px 55px;
+}
+.ur{
+	height:32px;
+	border:0;
+	color:#666;
+	width:236px;
+	margin:4px 28px;
+	background:url(images/user.png) no-repeat;
+	padding-left:10px;
+	font-size:16pt;
+	font-family:Arial, Helvetica, sans-serif;
+}
+.pw{
+	height:32px;
+	border:0;
+	color:#666;
+	width:236px;
+	margin:4px 28px;
+	background:url(images/password.png) no-repeat;
+	padding-left:10px;
+	font-size:16pt;
+	font-family:Arial, Helvetica, sans-serif;
+}
+.nd{
+	margin:4px 28px;
+	border-color: #a2ba40;
+}
+.bn{width:330px; height:72px; background:url(images/enter.png) no-repeat; border:0; display:block; font-size:18px; color:#FFF; font-family:Arial, Helvetica, sans-serif; font-weight:bolder;}
+.lg_foot{
+	height:80px;
+	width:330px;
+	padding: 6px 68px 0 68px;
+}
+</style>
+</head>
+
+<body class="b">
+<div class="lg">
+<form action="#" method="POST">
+    <div class="lg_top"></div>
+    <div class="lg_main">
+        <div class="lg_m_1">
+        
+        <input name="username" class="ur" />
+        <input name="password" type="password" class="pw" />
+		<select name="node" class="nd">
+			<option value="1">节点1</option>
+			<option value="2">节点2</option>
+			<option value="3">节点3</option>
+		</select>
+        </div>
+    </div>
+    <div class="lg_foot">
+    <input type="submit" value="登 陆" class="bn" /></div>
+</form>
+</div>
+<div style="text-align:center;color: white">
+<p>Copyright © 2018 AlienDove All rights reserved.</p>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".bn").click(function(){
+			var account = $('input[name="username"]').val();
+			var pwd = $('input[name="password"]').val();
+			if(account=='' || pwd==''){
+				alert("账号或密码不能为空!");
+			}else{
+				$.get("controller/verify.php",{account:account,password:pwd},function(data,status){
+					if (data==1) {
+						//跳转到后台
+						window.location.href="views/homepage.php";
+					}else {
+						alert("账号或密码有误!");
+					}
+				})
+			}
+		})
+	})
+</script>
+</body>
+</html>

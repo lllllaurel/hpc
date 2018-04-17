@@ -1,0 +1,108 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: laurel
+ * Date: 2018/4/10
+ * Time: 12:34
+ */
+/** para--0:show catagory;1:enter directory;2:back to last*/
+
+function parseCatalog(){
+	session_start();
+	if (!empty($_SESSION['pwd'])) {
+		unset($_SESSION['pwd']);
+	}
+    $order = "ls -l";
+    $res = array();
+	exec($order,$res);
+    unset($res[0]);
+    echo json_encode($res);
+}
+function enterDirectory(){
+	session_start();
+	$dirname = $_GET['dirname'];
+	//save/update session
+	if (isset($_SESSION['pwd'])) {
+		$pwd = $_SESSION['pwd'];
+		$newPath = $pwd."/".$dirname;
+		$_SESSION['pwd'] = $newPath;
+	}else{
+		$_SESSION['pwd'] = $dirname;
+	}
+	$order = "ls -l ".$_SESSION['pwd'];
+	$res = array();
+	exec($order,$res);
+	unset($res[0]);
+	echo json_encode($res);
+}
+function backOne(){
+	//get pwd from session
+	session_start();
+	$currentDirectory = $_SESSION['pwd'];
+	$dir_arr = explode("/",$currentDirectory);
+	$res = array();
+	unset($dir_arr[count($dir_arr)-1]);
+	$backone = implode("/",$dir_arr);
+	$_SESSION['pwd'] = $backone;
+	$order = "ls -l ".$backone;
+	if ($backone=="") {
+		unset($_SESSION['pwd']);
+	}
+	exec($order,$res);
+	unset($res[0]);
+	echo json_encode($res);
+}
+function catFile(){
+	// $filename = $_GET['filename'];
+	// $order = "cat ".$filename;
+	// $response = shell_exec($order);
+ //    echo $response;
+	echo "less: 与more差点儿相同，也是按页显示 文本 内容 ，差别是less能够一行一行的回退。more回退仅仅能一页一页回退。 
+head: 从头開始显示 文件 指定的行数； 
+tail: 显示 文件 指定的结尾的行数。但每一行的位置还是原 文件 里的位置，不会像tac那样与原 文件 相反。 
+vi: NB的 Linux 文本 编辑器。
+less: 与more差点儿相同，也是按页显示 文本 内容 ，差别是less能够一行一行的回退。more回退仅仅能一页一页回退。 
+head: 从头開始显示 文件 指定的行数； 
+tail: 显示 文件 指定的结尾的行数。但每一行的位置还是原 文件 里的位置，不会像tac那样与原 文件 相反。 
+vi: NB的 Linux 文本 编辑器。
+less: 与more差点儿相同，也是按页显示 文本 内容 ，差别是less能够一行一行的回退。more回退仅仅能一页一页回退。 
+head: 从头開始显示 文件 指定的行数； 
+tail: 显示 文件 指定的结尾的行数。但每一行的位置还是原 文件 里的位置，不会像tac那样与原 文件 相反。 
+vi: NB的 Linux 文本 编辑器。
+less: 与more差点儿相同，也是按页显示 文本 内容 ，差别是less能够一行一行的回退。more回退仅仅能一页一页回退。 
+head: 从头開始显示 文件 指定的行数； 
+tail: 显示 文件 指定的结尾的行数。但每一行的位置还是原 文件 里的位置，不会像tac那样与原 文件 相反。 
+vi: NB的 Linux 文本 编辑器。
+overflow:scroll;
+vi: NB的 Linux 文本 编辑器。
+less: 与more差点儿相同，也是按页显示 文本 内容 ，差别是less能够一行一行的回退。more回退仅仅能一页一页回退。 
+head: 从头開始显示 文件 指定的行数； 
+tail: 显示 文件 指定的结尾的行数。但每一行的位置还是原 文件 里的位置，不会像tac那样与原 文件 相反。 
+vi: NB的 Linux 文本 编辑器。
+vi: NB的 Linux 文本 编辑器。
+less: 与more差点儿相同，也是按页显示 文本 内容 ，差别是less能够一行一行的回退。more回退仅仅能一页一页回退。 
+head: 从头開始显示 文件 指定的行数； 
+tail: 显示 文件 指定的结尾的行数。但每一行的位置还是原 文件 里的位置，不会像tac那样与原 文件 相反。 
+vi: NB的 Linux 文本 编辑器。";
+}
+
+switch ($_GET['para']) {
+	case 0:
+		//show catalog
+		parseCatalog();
+		break;
+	case 1:
+		//enter catalog
+		enterDirectory();
+		break;
+	case 2:
+		//back one step
+		backOne();
+		break;
+	case 3:
+		catFile();
+		break;
+	default:
+		# code...
+		break;
+}

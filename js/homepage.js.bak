@@ -1,0 +1,26 @@
+$(document).ready(function(){
+	$("#cat").click(function(){
+		if (!judgeType()) {
+			alert("该文件不是文本文件类型!");
+			return false;
+		}else{
+			$.get("../controller/homepage.php",{para:3,filename:globleFilename},function(data,status){
+				$(".mid-console>span").text(data);
+			})	
+		}
+	})
+})
+
+function judgeType(){
+	var types = new Array("gzip","zip","7z","rar","tar","cab","gzip","arj","lzh",
+		"ace","uue","bz2","jar","iso","z","mp4","mp3","jpg","png");
+	var filename = globleFilename;
+	var suffix_a = filename.split(".");
+	suffix = suffix_a[suffix_a.length-1];
+	for (var i = types.length - 1; i >= 0; i--) {
+		if(types[i]==suffix.toLowerCase()){
+			return false;
+		}
+	}
+	return true;
+}
